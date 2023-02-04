@@ -5,12 +5,15 @@ import os, sys, time
 
 #create spark session
 spark = SparkSession.builder.master("spark://192.168.0.1:7077").getOrCreate()
+hdfs_path = "hdfs://192.168.0.1:9000/"
+
 print("Spark Session Started")
 
 #spark.conf.set("spark.executor.instances", 1)
 
 #initialize dataset
-q1=spark.read.parquet("./data/yellow_tripdata_2022-prwtoi6.parquet")
+q1 = spark.read.option("header", "true").option("inferSchema", "true").parquet(hdfs_path + "yellow_tripdata_2022-prwtoi6.parquet")
+#q1=spark.read.parquet("./data/yellow_tripdata_2022-prwtoi6.parquet")
 
 #add column for month
 q1new = q1.withColumn("month", month("tpep_pickup_datetime"))
