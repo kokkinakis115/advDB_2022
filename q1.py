@@ -5,7 +5,7 @@ import os, sys, time
 
 #create spark session
 spark = SparkSession.builder.master("spark://192.168.0.1:7077").getOrCreate()
-hdfs_path = "hdfs://192.168.0.1:9000/"
+hdfs_path = "hdfs://192.168.0.1:9000/data/"
 
 print("Spark Session Started")
 

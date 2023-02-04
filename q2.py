@@ -3,7 +3,7 @@ from pyspark.sql.types import *
 from pyspark.sql import SparkSession
 import os, sys, time
 
-hdfs_path = "hdfs://192.168.0.1:9000/"
+hdfs_path = "hdfs://192.168.0.1:9000/data/"
 
 #create spark session
 spark = SparkSession.builder.master("spark://192.168.0.1:7077").getOrCreate()

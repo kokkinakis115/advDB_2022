@@ -7,7 +7,7 @@ import os, sys, time
 spark = SparkSession.builder.master("spark://192.168.0.1:7077").getOrCreate()
 print("Spark Session Started")
 
-hdfs_path = "hdfs://192.168.0.1:9000/"
+hdfs_path = "hdfs://192.168.0.1:9000/data/"
 #spark.conf.set("spark.executor.instances", 1)
 
 #initialize dataset
@@ -27,7 +27,7 @@ ON data.Tolls_amount = max_tolls_table.maxtolls"""
 )
 
 start = time.time()
-query2.show(5)
+query2.show()
 time_elapsed = time.time() - start
 
 print("Time elapsed: ", time_elapsed)
