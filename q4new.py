@@ -18,22 +18,25 @@ q4=q4.filter((month(col("tpep_pickup_datetime")) >= 1) & (month(col("tpep_pickup
 
 #add column for month
 q4new = q4.withColumn("weekday", dayofweek(col("tpep_pickup_datetime")))
-q4new = q4.withColumn("timezone", hour(col("tpep_pickup_datetime")))
+q4new = q4new.withColumn("timezone", hour(col("tpep_pickup_datetime")))
+#q4new = q4new.withColumn("date", date(col(tpep_pickup_datetime")))
 
 #sql query
 q4new.createOrReplaceTempView("data")
-query_help = spark.sql(""" SELECT weekday, timezone, row_number() OVER (PARTITION BY weekday ORDER BY Average_Passenger_Count DESC) as row_nr
+query_help = spark.sql(""" SELECT weekday, timezone, Average_Passenger_Count, row_number() OVER (PARTITION BY weekday ORDER BY Average_Passenger_Count DESC) as row_nr
 FROM (
-    SELECT weekday, timezone, AVG(Passenger_count) as Average_Passenger_Count
+    SELECT weekday, timezone, SUM(Passenger_count)/COUNT(DISTINCT DAYOFYEAR(tpep_pickup_datetime)) as Average_Passenger_Count
     FROM data
     GROUP BY weekday, timezone)""")
+
 query_help.createOrReplaceTempView("newdata")
-query4 = spark.sql(""" SELECT *
+query4 = spark.sql(""" SELECT weekday, timezone, Average_Passenger_Count
 FROM newdata
-WHERE row_nr <= 3""")
+WHERE row_nr <= 3
+ORDER BY weekday""")
 
 start = time.time()
-query4.show()
+query4.show(21)
 time_elapsed = time.time() - start
 print("Time elapsed: ", time_elapsed) 
 
