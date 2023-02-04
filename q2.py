@@ -19,7 +19,11 @@ start = time.time()
 
 #sql query
 q2new.createOrReplaceTempView("data")
-query2 = spark.sql("select * from data where Tolls_amount != 0 group by month order by Tolls_amount desc limit 1")
+query2 = spark.sql("""select month, Tolls_amount 
+from data 
+where Tolls_amount != 0 
+group by month 
+order by Tolls_amount desc limit 1""")
 query2.show()
 
 time_elapsed = time.time() - start
