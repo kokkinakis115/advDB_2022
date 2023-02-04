@@ -11,6 +11,7 @@ print("Spark Session Started")
 
 #initialize dataset
 q2=spark.read.parquet("./data/yellow_tripdata_2022-prwtoi6.parquet")
+q2=q2.filter((month(col("tpep_pickup_datetime")) >= 1) & (month(col("tpep_pickup_datetime")) <= 6))
 
 #add column for month
 q2new = q2.withColumn("month", month("tpep_pickup_datetime"))
@@ -19,11 +20,10 @@ start = time.time()
 
 #sql query
 q2new.createOrReplaceTempView("data")
-query2 = spark.sql("""select month, max(Tolls_amount) 
-from data 
-where Tolls_amount != 0 
-group by month 
-order by Tolls_amount desc limit 1""")
+query2 = spark.sql("""SELECT *
+max(Tolls_amount) OVER month
+from data
+where Tolls_amount != 0""")
 query2.show()
 
 time_elapsed = time.time() - start
