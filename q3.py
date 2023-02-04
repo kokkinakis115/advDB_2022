@@ -17,11 +17,11 @@ q3 = spark.read.option("header", "true").option("inferSchema", "true").parquet(h
 q3=q3.filter((month(col("tpep_pickup_datetime")) >= 1) & (month(col("tpep_pickup_datetime")) <= 6))
 
 #add column for month
-q3new = q3.withColumn("fortnight", (month(col("tpep_pickup_datetime"))-1)*2 + floor(dayofmonth(col("tpep_pickup_datetime"))/15))
+q3new = q3.withColumn("fortnight", (month(col("tpep_pickup_datetime"))-1)*2 + floor(dayofmonth(col("tpep_pickup_datetime"))/16))
 
 #sql query
 q3new.createOrReplaceTempView("data")
-query3 = spark.sql("""SELECT fortnight, AVG(Trip_distance) as Average_Distance, AVG(Fare_amount) as Average_Fare
+query3 = spark.sql("""SELECT fortnight, AVG(Trip_distance) as Average_Distance, AVG(Total_amount) as Average_Fare
 FROM data
 WHERE PULocationID != DOLocationID
 GROUP BY fortnight 
