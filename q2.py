@@ -20,8 +20,7 @@ start = time.time()
 
 #sql query
 q2new.createOrReplaceTempView("data")
-query2 = spark.sql("""SELECT *
-max(Tolls_amount) OVER month
+query2 = spark.sql("""SELECT *, max(Tolls_amount) OVER month
 from data
 where Tolls_amount != 0""")
 query2.show()
