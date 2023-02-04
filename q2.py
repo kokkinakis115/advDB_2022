@@ -16,14 +16,14 @@ q2=q2.filter((month(col("tpep_pickup_datetime")) >= 1) & (month(col("tpep_pickup
 #add column for month
 q2new = q2.withColumn("month", month("tpep_pickup_datetime"))
 
-start = time.time()
-
 #sql query
 q2new.createOrReplaceTempView("data")
-query2 = spark.sql("""SELECT *, max(Tolls_amount) OVER (PARTITION BY month) as "maxtolls"
+query2 = spark.sql("""SELECT *, row_number() OVER (PARTITION BY month ORDER BY Tolls_amount) as maxtolls
 from data
-where Tolls_amount != 0""")
-query2.show()
+where Tolls_amount != 0 and maxtolls == 1""")
 
+start = time.time()
+query2.show()
 time_elapsed = time.time() - start
+
 print("Time elapsed: ", time_elapsed) 
