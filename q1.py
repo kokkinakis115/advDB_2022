@@ -26,3 +26,4 @@ start = time.time()
 query1.show()
 time_elapsed = time.time() - start
 print("Time elapsed: ", time_elapsed) 
+spark.stop()
