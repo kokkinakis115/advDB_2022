@@ -19,7 +19,7 @@ start = time.time()
 
 #sql query
 q2new.createOrReplaceTempView("data")
-query2 = spark.sql("""select month, first() 
+query2 = spark.sql("""select month, max(Tolls_amount) 
 from data 
 where Tolls_amount != 0 
 group by month 
