@@ -20,10 +20,12 @@ q2new = q2.withColumn("month", month("tpep_pickup_datetime"))
 q2new.createOrReplaceTempView("data")
 query2 = spark.sql("""SELECT *, row_number() OVER (PARTITION BY month ORDER BY Tolls_amount) as maxtolls
 FROM data
-WHERE Tolls_amount != 0""")
+WHERE Tolls_amount != 0""") #edw logika prepei na valoume maxtolls == 1 gia na paroume to prwto ordered row alla den mou diavazei to alias maxtolls panw
 
 start = time.time()
 query2.show()
 time_elapsed = time.time() - start
 
 print("Time elapsed: ", time_elapsed) 
+
+spark.stop()
