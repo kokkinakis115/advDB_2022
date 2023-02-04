@@ -17,8 +17,9 @@ q2new = q2.withColumn("month", month("tpep_pickup_datetime"))
 
 start = time.time()
 
+#sql query
 q2new.createOrReplaceTempView("data")
-query2 = spark.sql("select * from data where Tolls_amount != 0 order by Tolls_amount desc limit 1 group by month")
+query2 = spark.sql("select * from data where Tolls_amount != 0 group by month order by Tolls_amount desc limit 1")
 query2.show()
 
 time_elapsed = time.time() - start
