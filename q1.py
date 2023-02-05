@@ -1,7 +1,7 @@
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
 from pyspark.sql import SparkSession
-import os, sys, time
+import time
 import shutil
 import glob
 
@@ -30,11 +30,14 @@ WHERE data.month == 3 and zone_lookups.Zone == "Battery Park" and data.DOLocatio
 ORDER BY Tip_amount desc limit 1""")
 
 start = time.time()
-#query1.show()
 query1.write.option("header","true").option("delimiter",",").csv("q1_result")
 time_elapsed = time.time() - start
 print("Time elapsed: ", time_elapsed) 
+
+query1.show()
 spark.stop()
+
 files = glob.glob("./q1_result/*.csv")
 shutil.move(files[0], "q1_resulv.csv")
 shutil.rmtree("./q1_result")
+
