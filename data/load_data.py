@@ -6,7 +6,7 @@ import time, datetime
 # Create a Spark Session
 spark = SparkSession.builder.master("spark://192.168.0.1:7077").getOrCreate()
 print("Spark session created")
-hdfs_path = "hdfs://192.168.0.1:9000/"
+hdfs_path = "hdfs://192.168.0.1:9000/data/"
 
 # Read Taxi Trips
 taxi_trips_df = spark.read.option("header", "true").option("inferSchema", "true").parquet(hdfs_path + "yellow_tripdata_2022-prwtoi6.parquet")
