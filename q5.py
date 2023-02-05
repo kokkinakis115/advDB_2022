@@ -22,20 +22,20 @@ q5 = q5.withColumn("tip_perc", col("Tip_amount")/col("Fare_amount"))
 
 #sql query
 q5.createOrReplaceTempView("data")
-query_help = spark.sql(""" SELECT day_of_month, month, Average_Tip_Percentage, row_number() OVER (PARTITION BY month ORDER BY Average_Tip_Percentage DESC) as row_nr
+query_help = spark.sql("""SELECT day_of_month, month, Average_Tip_Percentage, row_number() OVER (PARTITION BY month ORDER BY Average_Tip_Percentage DESC) as row_nr
 FROM (
     SELECT day_of_month, month, AVG(tip_perc) as Average_Tip_Percentage
     FROM data
     GROUP BY day_of_month, month)""")
 
 query_help.createOrReplaceTempView("newdata")
-query5 = spark.sql(""" SELECT *
+query5 = spark.sql(""" SELECT day_of_month, month, Average_Tip_Percentage
 FROM newdata
 WHERE row_nr <= 5
 ORDER BY month""")
 
 start = time.time()
-query5.show(21)
+query5.show(30)
 time_elapsed = time.time() - start
 print("Time elapsed: ", time_elapsed) 
 
