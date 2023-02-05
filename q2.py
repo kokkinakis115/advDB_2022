@@ -1,12 +1,13 @@
 from pyspark.sql.types import *
 from pyspark.sql.functions import *
 from pyspark.sql import SparkSession
+import pandas
 import time
 import shutil
 import glob
 
 #create spark session
-spark = SparkSession.builder.master("spark://192.168.0.1:7077").getOrCreate()
+spark = SparkSession.builder.master("spark://192.168.0.1:7077").config("spark.dynamicAllocation.enabled", "false").getOrCreate()
 print("Spark Session Started")
 
 hdfs_path = "hdfs://192.168.0.1:9000/data/"
@@ -37,6 +38,9 @@ query2.show()
 spark.stop()
 
 files = glob.glob("./q2_result/*.csv")
-df_concat = pd.concat([pd.read_csv(f) for f in files ], ignore_index=True)
-shutil.move(df_concat, "q2_result.csv")
+df = pandas.concat([pandas.read_csv(f) for f in files ], ignore_index=True)
+df.to_csv("q2_result.csv", index=True)
+#files = glob.glob("./q2_result2/*.csv")
+#shutil.move(files[0], "q2_result.csv")
 shutil.rmtree("./q2_result")
+#shutil.rmtree("./q2_result2")
