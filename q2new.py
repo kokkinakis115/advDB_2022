@@ -22,10 +22,11 @@ q2 = q2.withColumn("month", month("tpep_pickup_datetime"))
 q2.createOrReplaceTempView("data")
 
 query2 = spark.sql("""
-SELECT *
+SELECT data.*
 FROM data INNER JOIN (SELECT month, MAX(Tolls_amount) as maxtolls 
-FROM data GROUP BY month) as max_tolls_table
-ON data.Tolls_amount = max_tolls_table.maxtolls""")
+FROM data GROUP BY month ) as max_tolls_table
+ON data.Tolls_amount = max_tolls_table.maxtolls
+ORDER BY data.month""")
 
 start = time.time()
 query2.write.option("header","true").option("delimiter",",").csv("q2_result")

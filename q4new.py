@@ -28,17 +28,17 @@ FROM (
     GROUP BY weekday, timezone)""")
 
 query_help.createOrReplaceTempView("newdata")
-query4 = spark.sql(""" SELECT *
+query4 = spark.sql(""" SELECT weekday, timezone, Average_Passenger_Count
 FROM newdata
 WHERE row_nr <= 3
-ORDER BY weekday""")
+ORDER BY weekday, row_nr""")
 
 start = time.time()
 query4.write.option("header","true").option("delimiter",",").csv("q4_result")
 time_elapsed = time.time() - start
 print("Time elapsed: ", time_elapsed) 
 
-query4.show()
+query4.show(21)
 spark.stop()
 
 files = glob.glob("./q4_result/*.csv")

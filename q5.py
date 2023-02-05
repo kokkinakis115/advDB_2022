@@ -29,10 +29,10 @@ FROM (
     GROUP BY day_of_month, month)""")
 
 query_help.createOrReplaceTempView("newdata")
-query5 = spark.sql(""" SELECT day_of_month, month, Average_Tip_Percentage
+query5 = spark.sql("""SELECT month, day_of_month, Average_Tip_Percentage
 FROM newdata
 WHERE row_nr <= 5
-ORDER BY month""")
+ORDER BY month, Average_Tip_Percentage DESC""")
 
 start = time.time()
 query5.show(30)
