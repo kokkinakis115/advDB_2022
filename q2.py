@@ -37,7 +37,6 @@ query2.show()
 spark.stop()
 
 files = glob.glob("./q2_result/*.csv")
-shutil.move(files[0], "q2_resulv.csv")
+df_concat = pd.concat([pd.read_csv(f) for f in files ], ignore_index=True)
+shutil.move(df_concat, "q2_result.csv")
 shutil.rmtree("./q2_result")
-
-
