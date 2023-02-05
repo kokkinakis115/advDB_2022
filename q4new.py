@@ -25,7 +25,7 @@ q4new = q4new.withColumn("timezone", hour(col("tpep_pickup_datetime")))
 q4new.createOrReplaceTempView("data")
 query_help = spark.sql(""" SELECT weekday, timezone, Average_Passenger_Count, row_number() OVER (PARTITION BY weekday ORDER BY Average_Passenger_Count DESC) as row_nr
 FROM (
-    SELECT weekday, timezone, SUM(Passenger_count)/COUNT(DISTINCT DAYOFYEAR(tpep_pickup_datetime)) as Average_Passenger_Count
+    SELECT weekday, timezone, SUM(Passenger_count) as Average_Passenger_Count
     FROM data
     GROUP BY weekday, timezone)""")
 
