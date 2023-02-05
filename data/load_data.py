@@ -14,11 +14,9 @@ taxi_trips_df = spark.read.option("header", "true").option("inferSchema", "true"
 # Filter tuples from Month 1 to 6
 taxi_trips_df = taxi_trips_df.filter((month(col("tpep_pickup_datetime")) >= 1) & (month(col("tpep_pickup_datetime")) <= 6))
 taxi_trips_rdd = taxi_trips_df.rdd
-taxi_trips_df.createOrReplaceTempView("taxi_trips")
 taxi_trips_df.printSchema()
 
 # Read Zone Lookups
 zone_lookups_df = spark.read.option("header", "true").option("inferSchema", "true").csv(hdfs_path + "taxi+_zone_lookup.csv")
 zone_lookups_rdd = zone_lookups_df.rdd
-zone_lookups_df.createOrReplaceTempView("zone_lookups")
 zone_lookups_df.printSchema()
